@@ -10,6 +10,9 @@ test_e2e: setup
 run: setup
 	npm run start
 
+run_dev: setup
+	npm run start:dev
+
 setup: node_modules/.package-lock.json
 node_modules/.package-lock.json: package-lock.json
 	npm install
