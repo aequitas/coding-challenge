@@ -2,10 +2,13 @@
 all: test
 
 test: setup
-	npm run test
+	npm run test -- ${args}
 
-test_e2e: setup
-	npm run test:e2e
+test_e2e: setup db.sqlite
+	npm run test:e2e -- ${args}
+
+db.sqlite:
+	npx knex migrate:latest
 
 run: setup
 	npm run start
