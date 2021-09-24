@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -26,22 +28,33 @@ export class UsersController {
 
   @Get()
   async findAll() {
-    return await this.usersService.findAll(loggedInUserId);
+    return await this.usersService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
+    if (+id != loggedInUserId) {
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    }
+
     return this.usersService.findOne(+id, loggedInUserId);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    if (+id != loggedInUserId) {
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    }
+
     return this.usersService.update(+id, updateUserDto, loggedInUserId);
   }
 
-  // TODO: user should only delete themselves
   @Delete(':id')
   remove(@Param('id') id: string) {
+    if (+id != loggedInUserId) {
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    }
+
     return this.usersService.remove(+id, loggedInUserId);
   }
 }

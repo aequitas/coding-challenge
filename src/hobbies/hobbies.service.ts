@@ -9,11 +9,14 @@ export class HobbiesService {
   constructor(@InjectConnection() private readonly knex: Knex) {}
 
   async create(createHobbyDto: CreateHobbyDto, userId: number) {
-    const hobbies = await this.knex.table('hobbies').insert({
-      name: createHobbyDto.name,
-      description: createHobbyDto.description,
-      userId: userId,
-    });
+    const hobbies = await this.knex
+      .table('hobbies')
+      .insert({
+        name: createHobbyDto.name,
+        description: createHobbyDto.description,
+        userId: userId,
+      })
+      .returning('id');
 
     return { hobbies };
   }
