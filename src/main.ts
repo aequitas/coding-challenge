@@ -1,10 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // setup auto validate for data classes
+  app.useGlobalPipes(new ValidationPipe());
+
+  // setup Swapper API docs
   const config = new DocumentBuilder()
     .setTitle('User hobbies')
     .setDescription('Here users can keep track of their hobbies')

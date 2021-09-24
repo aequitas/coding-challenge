@@ -5,6 +5,7 @@ import { AppModule } from './../src/app.module';
 import { UsersService } from './../src/users/users.service';
 import { knex } from 'knex';
 import { KnexModule } from 'nest-knexjs';
+import { ValidationPipe } from '@nestjs/common';
 
 describe('Code challenge (e2e)', () => {
   let app: INestApplication;
@@ -17,7 +18,9 @@ describe('Code challenge (e2e)', () => {
           config:{
             client: 'sqlite3',
             useNullAsDefault: true,
-            connection: ":memory:"
+            connection: {
+              filename: "db.sqlite",
+            }
           }
         }),
         AppModule
@@ -25,6 +28,7 @@ describe('Code challenge (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
     await app.init();
 
   });
@@ -45,6 +49,13 @@ describe('Code challenge (e2e)', () => {
       .patch('/users/1')
       .send({email: 'example2@example.com'})
       .expect(200)
+  });
+
+  it('should refuse invalid password', () => {
+    return request(app.getHttpServer())
+      .post('/users')
+      .send({name: 'example2', email: 'example@example.com', password: "toshort"})
+      .expect(400)
   });
 
   // it('should change user password', () => {
