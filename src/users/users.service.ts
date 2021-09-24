@@ -25,7 +25,8 @@ export class UsersService {
 
   async findOne(id: number) {
     const users = await this.knex.table('users').where('id', id);
-    return { users };  }
+    return { users };
+  }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     const users = await this.knex.table('users').where('id', id).update({

@@ -19,25 +19,37 @@ export class HobbiesService {
   }
 
   async findAll(userId: number) {
-    const hobbies = await this.knex.table('hobbies').where({userId: userId});
+    const hobbies = await this.knex.table('hobbies').where({ userId: userId });
     return { hobbies };
   }
 
   async findOne(id: number, userId: number) {
-    const hobbies = await this.knex.table('hobbies').where('id', id).where({userId: userId});
-    return { hobbies };  }
+    const hobbies = await this.knex
+      .table('hobbies')
+      .where('id', id)
+      .where({ userId: userId });
+    return { hobbies };
+  }
 
   async update(id: number, updateHobbyDto: UpdateHobbyDto, userId: number) {
-    const hobbies = await this.knex.table('hobbies').where('id', id).where({userId: userId}).update({
-      name: updateHobbyDto.name,
-      description: updateHobbyDto.description,
-    });
+    const hobbies = await this.knex
+      .table('hobbies')
+      .where('id', id)
+      .where({ userId: userId })
+      .update({
+        name: updateHobbyDto.name,
+        description: updateHobbyDto.description,
+      });
 
     return { hobbies };
   }
 
   async remove(id: number, userId: number) {
-    const hobbies = await this.knex.table('hobbies').where('id', id).where({userId: userId}).del();
+    const hobbies = await this.knex
+      .table('hobbies')
+      .where('id', id)
+      .where({ userId: userId })
+      .del();
     return { hobbies };
   }
 }

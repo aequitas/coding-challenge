@@ -2,8 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
-import { UsersService } from './../src/users/users.service';
-import { knex } from 'knex';
 import { KnexModule } from 'nest-knexjs';
 import { ValidationPipe } from '@nestjs/common';
 
@@ -15,22 +13,21 @@ describe('Code challenge (e2e)', () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         KnexModule.forRoot({
-          config:{
+          config: {
             client: 'sqlite3',
             useNullAsDefault: true,
             connection: {
-              filename: "db.sqlite",
-            }
-          }
+              filename: 'db.sqlite',
+            },
+          },
         }),
-        AppModule
+        AppModule,
       ],
     }).compile();
 
     app = moduleFixture.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
     await app.init();
-
   });
 
   afterAll(async () => {
@@ -40,22 +37,30 @@ describe('Code challenge (e2e)', () => {
   it('should create users', () => {
     return request(app.getHttpServer())
       .post('/users')
-      .send({name: 'example', email: 'example@example.com', password: "Welcome2021!"})
-      .expect(201)
+      .send({
+        name: 'example',
+        email: 'example@example.com',
+        password: 'Welcome2021!',
+      })
+      .expect(201);
   });
 
   it('should change user email', () => {
     return request(app.getHttpServer())
       .patch('/users/1')
-      .send({email: 'example2@example.com'})
-      .expect(200)
+      .send({ email: 'example2@example.com' })
+      .expect(200);
   });
 
   it('should refuse invalid password', () => {
     return request(app.getHttpServer())
       .post('/users')
-      .send({name: 'example2', email: 'example@example.com', password: "toshort"})
-      .expect(400)
+      .send({
+        name: 'example2',
+        email: 'example@example.com',
+        password: 'toshort',
+      })
+      .expect(400);
   });
 
   // it('should change user password', () => {
@@ -68,34 +73,28 @@ describe('Code challenge (e2e)', () => {
   it('should delete user', () => {
     // let userId = userService.create({name: 'example', email: 'example@example.com', password: "Welcome2021!"})
     // console.log(userId);
-    return request(app.getHttpServer())
-      .delete('/users/1')
-      .expect(200)
+    return request(app.getHttpServer()).delete('/users/1').expect(200);
   });
 
   it('should add user hobbies', () => {
     return request(app.getHttpServer())
       .post('/hobbies')
-      .send({name: "code challenges", description: "example", userId: 1})
-      .expect(201)
+      .send({ name: 'code challenges', description: 'example', userId: 1 })
+      .expect(201);
   });
 
-  it('should list user\'s hobbies', () => {
-    return request(app.getHttpServer())
-      .get('/hobbies')
-      .expect(200)
+  it("should list user's hobbies", () => {
+    return request(app.getHttpServer()).get('/hobbies').expect(200);
   });
 
   it('should change user hobbies', () => {
     return request(app.getHttpServer())
       .patch('/hobbies/1')
-      .send({name: "snowboarding"})
-      .expect(200)
+      .send({ name: 'snowboarding' })
+      .expect(200);
   });
 
   it('should delete user hobbies', () => {
-    return request(app.getHttpServer())
-      .delete('/hobbies/1')
-      .expect(200)
+    return request(app.getHttpServer()).delete('/hobbies/1').expect(200);
   });
 });

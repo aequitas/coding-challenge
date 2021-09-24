@@ -1,6 +1,14 @@
 .PHONY: all test run mrproper
 all: test
 
+lint:
+	npx prettier --check .
+	npm run lint
+
+fix: setup
+	npx prettier --write .
+	npm run lint
+
 test: setup
 	npm run test -- ${args}
 

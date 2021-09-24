@@ -8,13 +8,13 @@ import { HobbiesModule } from './hobbies/hobbies.module';
 @Module({
   imports: [
     KnexModule.forRoot({
-      config:{
+      config: {
         client: 'sqlite3',
         useNullAsDefault: true,
         connection: {
-          filename: "./db.sqlite"
-        }
-      }
+          filename: './db.sqlite',
+        },
+      },
     }),
     UsersModule,
     HobbiesModule,

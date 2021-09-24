@@ -4,6 +4,6 @@ import { HobbiesController } from './hobbies.controller';
 
 @Module({
   controllers: [HobbiesController],
-  providers: [HobbiesService]
+  providers: [HobbiesService],
 })
 export class HobbiesModule {}

@@ -10,13 +10,13 @@ describe('UsersService', () => {
       providers: [UsersService],
       imports: [
         KnexModule.forRoot({
-          config:{
+          config: {
             client: 'sqlite3',
             useNullAsDefault: true,
-            connection: ":memory:"
-          }
+            connection: ':memory:',
+          },
         }),
-      ]
+      ],
     }).compile();
 
     service = module.get<UsersService>(UsersService);
@@ -26,7 +26,6 @@ describe('UsersService', () => {
     expect(service).toBeDefined();
   });
 
-  it('shoud have password requirements', () => {
-
-  });
+  // TODO
+  // it('shoud have password requirements', () => {});
 });
