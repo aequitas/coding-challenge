@@ -12,8 +12,12 @@ fix: setup
 	npx prettier --write .
 	npm run lint
 
-test: setup db.sqlite
+test: unit_test e2e_test
+
+unit_test: setup
 	npm run test -- ${args}
+
+e2e_test: setup db.sqlite
 	npm run test:e2e -- ${args}
 
 db.sqlite:

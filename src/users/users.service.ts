@@ -18,18 +18,18 @@ export class UsersService {
     return { users };
   }
 
-  async findAll() {
-    const users = await this.knex.table('users');
+  async findAll(userId: number) {
+    const users = await this.knex.table('users').where('id', userId);
     return { users };
   }
 
-  async findOne(id: number) {
-    const users = await this.knex.table('users').where('id', id);
+  async findOne(id: number, userId: number) {
+    const users = await this.knex.table('users').where('id', id).where('id', userId);
     return { users };
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    const users = await this.knex.table('users').where('id', id).update({
+  async update(id: number, updateUserDto: UpdateUserDto, userId: number) {
+    const users = await this.knex.table('users').where('id', id).where('id', userId).update({
       name: updateUserDto.name,
       email: updateUserDto.email,
     });
@@ -37,8 +37,8 @@ export class UsersService {
     return { users };
   }
 
-  async remove(id: number) {
-    const users = await this.knex.table('users').where('id', id).del();
+  async remove(id: number, userId: number) {
+    const users = await this.knex.table('users').where('id', id).where('id', userId).del();
     return { users };
   }
 }
